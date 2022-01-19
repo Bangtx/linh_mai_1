@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+
+  web:
+    container_name: ${PROJECT_NAME}_web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - './web:/app/web'
+      - /app/web/node_modules
+    ports:
+      - '5000:5000'
+
+  redis:
+    container_name: ${PROJECT_NAME}_redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+
+volumes:
+  redis:
+    driver: local
