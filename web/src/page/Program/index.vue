@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.pa-3
+  div
     v-row.header-top.white--text
       v-col(cols="1")
         span ANTICANCER
@@ -28,6 +28,51 @@
       v-list
         v-list-item.hover-content  Add Image
         v-list-item.hover-content(@click="openAddPatient = true")  Add patient
+
+    div.bg-content.mt-3
+      div.info
+        v-list-item
+          v-icon(x-large color="white") mdi-credit-card
+          v-container
+            span.ttkb.white--text THÔNG TIN KHÁM BỆNH
+        hr
+        div.info-detail
+          v-list-item
+            span.white--text Sổ lưu trữ: 12345
+          v-list-item
+            span.white--text Ngày nhập viện: 20-02-2022
+          v-list-item
+            span.white--text Họ và tên: Phùng Văn Kiệm
+          v-list-item
+            span.white--text Tuổi: 18
+          v-list-item
+            span.white--text Địa chỉ: Vĩnh Phúc
+          v-list-item
+            span.white--text Lý do: hehe hihi đi chơi
+          v-list-item
+            span.white--text Lý do: Không
+      div.app
+        v-list-item.ttls
+          v-spacer
+          span.white--text.pa-4 TRIỆU CHỨNG LÂM SÀNG
+          v-spacer
+        hr
+        table
+          tr
+            th ID
+            th Họ và tên đệm
+          tr
+            td 1
+            td Nguyễn Minh
+          tr
+            td 2
+            td Vũ Kim
+          tr
+            td 3
+            td Nguyễn Linh
+          tr
+            td 4
+            td Vi Đại
 
     add-patient-dialog(
       :value="openAddPatient"
@@ -67,4 +112,36 @@ export default Program
   background-color: #212f38
 .hover-content
   cursor: pointer
+.bg-content
+  background-color: #2d4a5c
+  width: 100%
+  height: 95vh
+  position: relative
+.v-application .info
+  width: 23%
+  height: 80vh
+  position: absolute
+  left: 2%
+  top: 5vh
+  background-color: #275f6e !important
+  border-radius: 20px
+.v-application .app
+  width: 72%
+  height: 80vh
+  position: absolute
+  left: 26%
+  top: 5vh
+  background-color: #275f6e !important
+  border-radius: 20px
+.ttkb
+  font-size: 27px
+.ttls
+  font-size: 35px
+.info-detail
+  font-size: 20px
+table
+  width: 100%
+table th td
+  border: 1px solid white
+
 </style>

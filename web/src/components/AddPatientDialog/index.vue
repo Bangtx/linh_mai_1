@@ -28,18 +28,20 @@
           v-list-item
             v-text-field(:label="'background disease'" v-model="data.backgroundDisease")
           v-list-item
-            v-file-input(label="File input" filled repend-icon="mdi-camera")
+            input(type="file" id="file" ref="file" v-on:change="handleFileUpload()")
+          v-img(max-width="100" max-height="100" src="url")
 
         v-card-actions
           v-btn.relative-btn(
             :large="!$vuetify.breakpoint.xsOnly"
             block
             color="rough_black"
-            @click="clickLogin()"
+            @click="clickOK()"
           ) Ok
 </template>
 
 <script lang="ts">
+import axios from 'axios'
 const AddPatientDialog = {
   name: 'AddPatientDialog',
   props: {
@@ -50,7 +52,10 @@ const AddPatientDialog = {
   },
   data () {
     return  {
+      chosenFile: null,
       show: true,
+      file: '',
+      url: '',
       data: {
         name: '',
         date: `${(new Date()).getUTCFullYear()}-${(new Date()).getUTCMonth() + 1}-${(new Date()).getDate()}`,
@@ -65,7 +70,19 @@ const AddPatientDialog = {
   methods: {
     close () {
       this.$emit('on-close')
-    }
+    },
+    async clickOK () {
+      let formData = new FormData();
+      formData.append('file', this.file);
+      const nameImg = await axios.post('http://127.0.0.1:8000/image', formData)
+      this.url = `http://127.0.0.1:8000/vector_image?name=${nameImg.data.name}`
+      console.log(this.url)
+      this.close()
+      // const url = await axios.get(`http://127.0.0.1:8000/vector_image?name=${nameImg.data.name}`)
+    },
+    async handleFileUpload () {
+      this.file = this.$refs.file.files[0];
+    },
   }
 }
 export default AddPatientDialog
