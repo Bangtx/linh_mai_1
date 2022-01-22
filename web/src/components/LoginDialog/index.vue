@@ -15,6 +15,7 @@
             v-icon mdi-close
 
         div.pa-4
+          v-list-item
           v-row
             v-col(cols="4")
               div.mt-6.ml-2 User name
