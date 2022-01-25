@@ -22,6 +22,8 @@
           v-list-item
             v-text-field(:label="'Enter age'" v-model="data.age")
           v-list-item
+            v-text-field(:label="'Enter province'" v-model="data.province")
+          v-list-item
             v-text-field(:label="'Enter sex'" v-model="data.sex")
           v-list-item
             v-text-field(:label="'Enter reason'" v-model="data.reason")
@@ -63,20 +65,22 @@ const AddPatientDialog = {
         sex: '',
         reason: '',
         status: '',
+        province: '',
         backgroundDisease: ''
       }
     }
   },
   methods: {
-    close () {
-      this.$emit('on-close')
+    close (data) {
+      this.$emit('on-close', this.data)
     },
     async clickOK () {
       let formData = new FormData();
       formData.append('file', this.file);
       const nameImg = await axios.post('http://127.0.0.1:8000/image', formData)
       this.url = `http://127.0.0.1:8000/vector_image?name=${nameImg.data.name}`
-      console.log(this.url)
+      console.log(nameImg.data)
+      this.$emit('set-img-name', nameImg.data)
       this.close()
       // const url = await axios.get(`http://127.0.0.1:8000/vector_image?name=${nameImg.data.name}`)
     },

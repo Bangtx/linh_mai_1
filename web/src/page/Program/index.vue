@@ -38,68 +38,113 @@
         hr
         div.info-detail
           v-list-item
-            span.white--text Sổ lưu trữ: 12345
+            span.white--text Sổ lưu trữ:
           v-list-item
-            span.white--text Ngày nhập viện: 20-02-2022
+            span.white--text Ngày nhập viện: {{ data.date }}
           v-list-item
-            span.white--text Họ và tên: Phùng Văn Kiệm
+            span.white--text Họ và tên: {{ data.name }}
           v-list-item
-            span.white--text Tuổi: 18
+            span.white--text Tuổi: {{ data.age }}
           v-list-item
-            span.white--text Địa chỉ: Vĩnh Phúc
+            span.white--text Địa chỉ: {{ data.province }}
           v-list-item
-            span.white--text Lý do: hehe hihi đi chơi
+            span.white--text Lý do: {{ data.reason }}
           v-list-item
-            span.white--text Lý do: Không
+            span.white--text Tiền bệnh: {{ data.backgroundDisease }}
       div.app
         v-list-item.ttls
           v-spacer
           span.white--text.pa-4 TRIỆU CHỨNG LÂM SÀNG
           v-spacer
         hr
-        table
-          tr
-            th ID
-            th Họ và tên đệm
-          tr
-            td 1
-            td Nguyễn Minh
-          tr
-            td 2
-            td Vũ Kim
-          tr
-            td 3
-            td Nguyễn Linh
-          tr
-            td 4
-            td Vi Đại
+        div(v-for="(item, index) in symptoms")
+          div.ttls-content.pa-2
+            span.white--text {{ item.name }}
+            v-slider.mt-9.white--text(:label="'Mức độ'" :thumb-color="thumColor[index]" thumb-label="always" v-model="item.point")
+        v-list-item
+          v-spacer
+          v-btn.mt-10(@click="openResultDialog = true") Submit
 
     add-patient-dialog(
       :value="openAddPatient"
-      @on-close="openAddPatient = false"
+      @on-close="closeDialog"
+      @set-img-name="setImageName"
+    )
+    result-dialog(
+      :value="openResultDialog"
+      :img-name="imageName"
+      @on-close="openResultDialog = false"
     )
 
 </template>
 
 <script lang="ts">
 import AddPatientDialog from '@/components/AddPatientDialog/index.vue'
+import ResultDialog from '@/components/ResultDialog/index.vue'
 const Program = {
   name: 'Program',
   components: {
-    AddPatientDialog
+    AddPatientDialog,
+    ResultDialog
   },
   data () {
     return {
+      imageName: {name: '', yes: false},
+      openResultDialog: false,
       openAddPatient: false,
-      hover: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-      ]
+      thumColor: [
+        'orange darken-7',
+        'orange darken-7',
+        'orange darken-7',
+        'orange darken-7',
+        'orange darken-7',
+        'orange darken-7',
+        'orange darken-7',
+        'orange darken-7'
+      ],
+      symptoms: [
+        { name: 'Đau đầu thường xuyên và nghiêm trọng', point: 0 },
+        { name: 'Thay đổi tính cách, hành vi và suy nghĩ', point: 0 },
+        { name: 'Rối loạn chức năng hoặc nhầm lẫn trí nhớ', point: 0 },
+        { name: 'Nghe bất thường', point: 0 },
+        { name: 'Giao tiếp cảm trở', point: 0 },
+        { name: 'Vấn đề cân bằng', point: 0 },
+        { name: 'Buồn nôn, nôn mửa và buồn ngủ', point: 0 },
+        { name: 'Tê tay chân', point: 0 }
+      ],
+      data: {
+        name: '',
+        province: '',
+        date: '',
+        age: '',
+        sex: '',
+        reason: '',
+        status: '',
+        backgroundDisease: ''
+      }
+    }
+  },
+  watch: {
+    symptoms: {
+      handler: (after, before) => {
+        // after.forEach((e, index) => {
+        //   console.log(this)
+        //   // this.thumColor[index] = e.point < 30 ? 'green darken-7' : e.point < 70 ? 'yellow darken-7' : 'red darken-7'
+        // })
+      },
+      deep: true
     }
   },
   methods: {
     openMenu () {
       console.log('openMenu')
+    },
+    closeDialog (data) {
+      this.data = data
+      this.openAddPatient = false
+    },
+    setImageName (data) {
+      this.imageName = data
     }
   }
 }
@@ -119,7 +164,7 @@ export default Program
   position: relative
 .v-application .info
   width: 23%
-  height: 80vh
+  height: 65vh
   position: absolute
   left: 2%
   top: 5vh
@@ -127,7 +172,7 @@ export default Program
   border-radius: 20px
 .v-application .app
   width: 72%
-  height: 80vh
+  height: 85vh
   position: absolute
   left: 26%
   top: 5vh
@@ -143,5 +188,10 @@ table
   width: 100%
 table th td
   border: 1px solid white
-
+.ttls-content
+  width: 50%
+  border: 2px solid #2b6e7f
+  float: left
+  span
+    font-size: 22px
 </style>

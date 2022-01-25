@@ -1,6 +1,7 @@
 from fastapi import *
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 api = FastAPI()
 url = 'http://127.0.0.1:8000/'
@@ -16,12 +17,19 @@ api.add_middleware(
 
 @api.post('/image')
 async def create_upload_file(file: UploadFile = File(...)):
-    file_location = f"file/{file.filename}"
-    with open(file_location, "wb+") as file_object:
-        file_object.write(file.file.read())
-    return {"name": file.filename}
+    # file_location = f"file/{file.filename}"
+    # with open(file_location, "wb+") as file_object:
+    #     file_object.write(file.file.read())
+    imgs = os.listdir('file/yes')
+    print(imgs)
+    return {"name": file.filename, 'yes': file.filename in imgs}
 
 
 @api.get("/vector_image")
 def image_endpoint(name: str):
-    return FileResponse(f'file/{name}')
+    return FileResponse(f'file/result/{name}')
+
+
+@api.get("/vector")
+def image_endpoint(name: str):
+    return FileResponse(f'file/test/{name}')

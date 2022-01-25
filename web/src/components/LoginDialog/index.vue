@@ -53,6 +53,7 @@ const LoginDialog = {
     },
     clickLogin () {
       if (this.userName === 'admin' && this.passWord === 'admin') {
+        this.$router.push({ path: '/program' })
         this.close()
       }
     }
