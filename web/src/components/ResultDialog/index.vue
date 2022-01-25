@@ -86,16 +86,16 @@ const ResultDialog = {
       this.$emit('on-close')
     },
     async getUrl () {
-      this.url = `http://127.0.0.1:8000/vector_image?name=${this.imgName}`
+      this.url = `https://backendlinhmai.herokuapp.com/vector_image?name=${this.imgName}`
     }
   },
   watch: {
     value (val) {
       if (val) {
-        this.url = `http://127.0.0.1:8000/vector_image?name=${this.imgName.name}`
+        this.url = `https://backendlinhmai.herokuapp.com/vector_image?name=${this.imgName.name}`
         this.urlSmall = this.url
         if (this.imgName.yes) {
-          this.urlSmall = `http://127.0.0.1:8000/vector?name=${this.imgName.name}`
+          this.urlSmall = `https://backendlinhmai.herokuapp.com/vector?name=${this.imgName.name}`
         }
       }
     }

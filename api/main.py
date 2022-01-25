@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 
 api = FastAPI()
-url = 'http://127.0.0.1:8000/'
+url = 'https://backendlinhmai.herokuapp.com//'
 origins = ["*"]
 api.add_middleware(
     CORSMiddleware,

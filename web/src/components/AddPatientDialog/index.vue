@@ -77,8 +77,8 @@ const AddPatientDialog = {
     async clickOK () {
       let formData = new FormData();
       formData.append('file', this.file);
-      const nameImg = await axios.post('http://127.0.0.1:8000/image', formData)
-      this.url = `http://127.0.0.1:8000/vector_image?name=${nameImg.data.name}`
+      const nameImg = await axios.post('https://backendlinhmai.herokuapp.com/image', formData)
+      this.url = `https://backendlinhmai.herokuapp.com/vector_image?name=${nameImg.data.name}`
       console.log(nameImg.data)
       this.$emit('set-img-name', nameImg.data)
       this.close()
