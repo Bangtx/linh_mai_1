@@ -46,13 +46,19 @@ const ListPatientDialog = {
     async getData () {
       const { data } = await axios.get(`${this.baseUrl}/get_patients`)
       this.patients = data
+      console.log(this.patients)
     },
     handleClickPatient (patient) {
       this.$emit('click-patient', patient)
+      console.log(patient.img_name, 12)
     }
   },
-  mounted() {
-    this.getData()
+  watch: {
+    value (val) {
+      if (val) {
+        this.getData()
+      }
+    }
   }
 }
 

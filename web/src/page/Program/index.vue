@@ -159,8 +159,8 @@ const Program = {
       Object.keys(patientData).forEach((key) => {
         this.data = patientData[key]
       })
-      patientData.img_name = this.imageName.name
-      console.log(patientData)
+      this.imageName.name = patientData.img_name
+      // console.log(patientData)
     }
   }
 }

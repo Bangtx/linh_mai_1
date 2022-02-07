@@ -16,19 +16,19 @@
 
         div.pa-4
           v-list-item
-            v-text-field(:label="'Enter date'" v-model="data.date")
+            v-text-field(:label="'Nhập ngày'" v-model="data.date")
           v-list-item
-            v-text-field(:label="'Enter name'" v-model="data.name")
+            v-text-field(:label="'Nhập tên'" v-model="data.name")
           v-list-item
-            v-text-field(:label="'Enter age'" type="number" v-model="data.age")
+            v-text-field(:label="'Nhập tuổi'" type="number" v-model="data.age")
           v-list-item
-            v-text-field(:label="'Enter province'" v-model="data.province")
+            v-text-field(:label="'Nhập tỉnh thành'" v-model="data.province")
           v-list-item
-            v-text-field(:label="'Enter sex'" v-model="data.sex")
+            v-text-field(:label="'Nhập giới tính'" v-model="data.sex")
           v-list-item
-            v-text-field(:label="'Enter reason'" v-model="data.reason")
+            v-text-field(:label="'Nhập lý do (không bắt buộc)'" v-model="data.reason")
           v-list-item
-            v-text-field(:label="'background disease'" v-model="data.backgroundDisease")
+            v-text-field(:label="'Bệnh nền (không bắt buộc)'" v-model="data.backgroundDisease")
           v-list-item
             input(type="file" id="file" ref="file" v-on:change="handleFileUpload()")
           v-img(max-width="100" max-height="100" src="url")
