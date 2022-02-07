@@ -20,7 +20,7 @@
           v-list-item
             v-text-field(:label="'Enter name'" v-model="data.name")
           v-list-item
-            v-text-field(:label="'Enter age'" v-model="data.age")
+            v-text-field(:label="'Enter age'" type="number" v-model="data.age")
           v-list-item
             v-text-field(:label="'Enter province'" v-model="data.province")
           v-list-item
@@ -44,6 +44,7 @@
 
 <script lang="ts">
 import axios from 'axios'
+import moment from 'moment'
 const AddPatientDialog = {
   name: 'AddPatientDialog',
   props: {
@@ -54,13 +55,14 @@ const AddPatientDialog = {
   },
   data () {
     return  {
+      baseUrl: 'http://127.0.0.1:8000',
       chosenFile: null,
       show: true,
       file: '',
       url: '',
       data: {
         name: '',
-        date: `${(new Date()).getUTCFullYear()}-${(new Date()).getUTCMonth() + 1}-${(new Date()).getDate()}`,
+        date: moment().format('YYYY-MM-DD'),
         age: '',
         sex: '',
         reason: '',
@@ -77,9 +79,19 @@ const AddPatientDialog = {
     async clickOK () {
       let formData = new FormData();
       formData.append('file', this.file);
-      const nameImg = await axios.post('https://backendlinhmai.herokuapp.com/image', formData)
+      const nameImg = await axios.post(`${this.baseUrl}/image`, formData)
+      const dataPatient = {
+        date: this.data.date,
+        name: this.data.name,
+        age: this.data.age,
+        province: this.data.province,
+        sex: this.data.sex,
+        reason: this.data.reason,
+        background_disease: this.data.backgroundDisease,
+        img_name: nameImg.data.name
+      }
+      await axios.post(`${this.baseUrl}/add_patient`, dataPatient)
       this.url = `https://backendlinhmai.herokuapp.com/vector_image?name=${nameImg.data.name}`
-      console.log(nameImg.data)
       this.$emit('set-img-name', nameImg.data)
       this.close()
       // const url = await axios.get(`http://127.0.0.1:8000/vector_image?name=${nameImg.data.name}`)

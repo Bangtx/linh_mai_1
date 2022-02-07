@@ -2,8 +2,13 @@ from fastapi import *
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from sqlalchemy.orm import Session
+from sql_app import models, schemas
+from sql_app.database import SessionLocal, engine
+from sql_app.schemas import Patient
 
 api = FastAPI()
+models.Base.metadata.create_all(bind=engine)
 url = 'https://backendlinhmai.herokuapp.com//'
 origins = ["*"]
 api.add_middleware(
@@ -13,6 +18,14 @@ api.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @api.post('/image')
@@ -33,3 +46,31 @@ def image_endpoint(name: str):
 @api.get("/vector")
 def image_endpoint(name: str):
     return FileResponse(f'file/test/{name}')
+
+
+@api.post('/add_patient')
+def add_patient(patient: Patient, db: Session = Depends(get_db)):
+    data = models.Patient(**patient.dict())
+    db.add(data)
+    db.commit()
+    db.refresh(data)
+    return data
+
+
+@api.get('/get_patients')
+def get_patient(db: Session = Depends(get_db)):
+    return db.query(models.Patient).all()
+
+
+@api.post("/users/", response_model=schemas.User)
+def create_user_api(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    return create_user(db=db, user=user)
+
+
+def create_user(db: Session, user: schemas.UserCreate):
+    fake_hashed_password = user.password + "notreallyhashed"
+    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user

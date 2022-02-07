@@ -3,11 +3,11 @@
     v-row.header-top.white--text
       v-col(cols="1")
         span ANTICANCER
-      v-col(cols="1")
-        span Danh sách ra
-      v-col(cols="1")
+      v-col(cols="2")
+        span(@click="openListPatientDialog = true") Danh sách Bệnh Nhân
+      v-col(cols="2")
         span Trợ giúp
-      v-col(cols="7")
+      v-col(cols="5")
       v-col(cols="1")
         span Home
       v-col(cols="1")
@@ -26,7 +26,7 @@
             v-icon(v-bind="attrs" v-on="on" @click="openMenu").ml-5(color="white") mdi-dialpad
 
       v-list
-        v-list-item.hover-content  Add Image
+        //v-list-item.hover-content  Add Image
         v-list-item.hover-content(@click="openAddPatient = true")  Add patient
 
     div.bg-content.mt-3
@@ -75,23 +75,31 @@
       :img-name="imageName"
       @on-close="openResultDialog = false"
     )
+    list-patient-dialog(
+      :value="openListPatientDialog"
+      @on-close="openListPatientDialog = false"
+      @click-patient="clickPatient"
+    )
 
 </template>
 
 <script lang="ts">
 import AddPatientDialog from '@/components/AddPatientDialog/index.vue'
 import ResultDialog from '@/components/ResultDialog/index.vue'
+import ListPatientDialog from '@/components/ListPatientDialog/index.vue'
 const Program = {
   name: 'Program',
   components: {
     AddPatientDialog,
-    ResultDialog
+    ResultDialog,
+    ListPatientDialog
   },
   data () {
     return {
       imageName: {name: '', yes: false},
       openResultDialog: false,
       openAddPatient: false,
+      openListPatientDialog: false,
       thumColor: [
         'orange darken-7',
         'orange darken-7',
@@ -145,6 +153,14 @@ const Program = {
     },
     setImageName (data) {
       this.imageName = data
+    },
+    clickPatient (patientData) {
+      this.openResultDialog = true
+      Object.keys(patientData).forEach((key) => {
+        this.data = patientData[key]
+      })
+      patientData.img_name = this.imageName.name
+      console.log(patientData)
     }
   }
 }
@@ -155,6 +171,8 @@ export default Program
 <style lang="sass">
 .header-top
   background-color: #212f38
+  span
+    cursor: pointer
 .hover-content
   cursor: pointer
 .bg-content

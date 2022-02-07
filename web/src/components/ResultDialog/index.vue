@@ -78,7 +78,9 @@ const ResultDialog = {
       result: [
         { recommend: 'Lấy mẫu sinh thiết và phẫu thuật loại bỏ', result: '95% khả năng ung thư'},
         { recommend: 'Lấy mẫu sinh thiết và phẫu thuật loại bỏ', result: '96% khả năng ung thư'}
-      ]
+      ],
+      baseUrl: 'http://127.0.0.1:8000'
+      // baseUrl: 'https://backendlinhmai.herokuapp.com',
     }
   },
   methods: {
@@ -86,16 +88,16 @@ const ResultDialog = {
       this.$emit('on-close')
     },
     async getUrl () {
-      this.url = `https://backendlinhmai.herokuapp.com/vector_image?name=${this.imgName}`
+      this.url = `${this.baseUrl}/vector_image?name=${this.imgName}`
     }
   },
   watch: {
     value (val) {
       if (val) {
-        this.url = `https://backendlinhmai.herokuapp.com/vector_image?name=${this.imgName.name}`
+        this.url = `${this.baseUrl}/vector_image?name=${this.imgName.name}`
         this.urlSmall = this.url
         if (this.imgName.yes) {
-          this.urlSmall = `https://backendlinhmai.herokuapp.com/vector?name=${this.imgName.name}`
+          this.urlSmall = `${this.baseUrl}/vector?name=${this.imgName.name}`
         }
       }
     }
