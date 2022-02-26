@@ -26,7 +26,7 @@
             v-col(cols="4")
               div.mt-6.ml-2 Pass word
             v-col(cols="8")
-              v-text-field(:label="'enter pass word'" v-model="passWord")
+              v-text-field(:label="'enter pass word'" type="password" v-model="passWord")
 
         v-card-actions
           v-btn.relative-btn(

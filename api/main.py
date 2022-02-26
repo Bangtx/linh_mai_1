@@ -51,6 +51,10 @@ def image_endpoint(name: str):
 @api.post('/add_patient')
 def add_patient(patient: Patient, db: Session = Depends(get_db)):
     data = models.Patient(**patient.dict())
+    patients = get_patient(db)
+    names = list(map(lambda x: x.name, patients))
+    if patient.name in names:
+        return {'msg': 'patient already exists'}
     db.add(data)
     db.commit()
     db.refresh(data)
@@ -59,7 +63,8 @@ def add_patient(patient: Patient, db: Session = Depends(get_db)):
 
 @api.get('/get_patients')
 def get_patient(db: Session = Depends(get_db)):
-    return db.query(models.Patient).all()
+    result = db.query(models.Patient).all()
+    return result
 
 
 @api.post("/users/", response_model=schemas.User)

@@ -52,28 +52,32 @@
           v-list-item
             span.white--text Tiền bệnh: {{ data.backgroundDisease }}
       div.app
-        v-list-item.ttls
-          v-spacer
-          span.white--text.pa-4 TRIỆU CHỨNG LÂM SÀNG
-          v-spacer
-        hr
-        div(v-for="(item, index) in symptoms")
-          div.ttls-content.pa-2
-            span.white--text {{ item.name }}
-            v-slider.mt-9.white--text(:label="'Mức độ'" :thumb-color="thumColor[index]" thumb-label="always" v-model="item.point")
-        v-list-item
-          v-spacer
-          v-btn.mt-10(@click="openResultDialog = true") Submit
+        clinical-symptoms(
+          v-model="point"
+          @open-dialog="openResultDialog()"
+        )
+        //v-list-item.ttls
+        //  v-spacer
+        //  span.white--text.pa-4 TRIỆU CHỨNG LÂM SÀNG
+        //  v-spacer
+        //hr
+        //div(v-for="(item, index) in symptoms")
+        //  div.ttls-content.pa-2
+        //    span.white--text {{ item.name }}
+        //    v-slider.mt-9.white--text(:label="'Mức độ'" :thumb-color="thumColor[index]" thumb-label="always" v-model="item.point")
+        //v-list-item
+        //  v-spacer
+        //  v-btn.mt-10(@click="isOpenResultDialog = true") Submit
 
     add-patient-dialog(
       :value="openAddPatient"
       @on-close="closeDialog"
-      @set-img-name="setImageName"
+      @set-data-patient="setDataPatient($event)"
     )
     result-dialog(
-      :value="openResultDialog"
+      :value="isOpenResultDialog"
       :img-name="imageName"
-      @on-close="openResultDialog = false"
+      @on-close="isOpenResultDialog = false"
     )
     list-patient-dialog(
       :value="openListPatientDialog"
@@ -87,17 +91,23 @@
 import AddPatientDialog from '@/components/AddPatientDialog/index.vue'
 import ResultDialog from '@/components/ResultDialog/index.vue'
 import ListPatientDialog from '@/components/ListPatientDialog/index.vue'
+import ClinicalSymptoms from '@/components/ClinicalSymptoms/index.vue'
+import axios from "axios";
 const Program = {
   name: 'Program',
   components: {
     AddPatientDialog,
     ResultDialog,
-    ListPatientDialog
+    ListPatientDialog,
+    ClinicalSymptoms
   },
   data () {
     return {
+      baseUrl: 'http://127.0.0.1:8000',
+      point: [0, 0, 0, 0, 0, 0, 0, 0],
       imageName: {name: '', yes: false},
-      openResultDialog: false,
+      dataPatient: {},
+      isOpenResultDialog: false,
       openAddPatient: false,
       openListPatientDialog: false,
       thumColor: [
@@ -115,7 +125,7 @@ const Program = {
         { name: 'Thay đổi tính cách, hành vi và suy nghĩ', point: 0 },
         { name: 'Rối loạn chức năng hoặc nhầm lẫn trí nhớ', point: 0 },
         { name: 'Nghe bất thường', point: 0 },
-        { name: 'Giao tiếp cảm trở', point: 0 },
+        { name: 'Giao tiếp cản trở', point: 0 },
         { name: 'Vấn đề cân bằng', point: 0 },
         { name: 'Buồn nôn, nôn mửa và buồn ngủ', point: 0 },
         { name: 'Tê tay chân', point: 0 }
@@ -151,16 +161,30 @@ const Program = {
       this.data = data
       this.openAddPatient = false
     },
-    setImageName (data) {
-      this.imageName = data
+    setDataPatient (data) {
+      this.dataPatient = data
+      this.imageName.name = data.img_name
     },
     clickPatient (patientData) {
-      this.openResultDialog = true
+      this.isOpenResultDialog = true
       Object.keys(patientData).forEach((key) => {
         this.data = patientData[key]
       })
       this.imageName.name = patientData.img_name
       // console.log(patientData)
+    },
+    async openResultDialog () {
+      this.isOpenResultDialog = true
+      this.dataPatient['point_1'] = this.point[0],
+      this.dataPatient['point_2'] = this.point[1],
+      this.dataPatient['point_3'] = this.point[2],
+      this.dataPatient['point_4'] = this.point[3],
+      this.dataPatient['point_5'] = this.point[4],
+      this.dataPatient['point_6'] = this.point[5],
+      this.dataPatient['point_7'] = this.point[6],
+      this.dataPatient['point_8'] = this.point[7]
+      console.log(this.dataPatient)
+      await axios.post(`${this.baseUrl}/add_patient`, this.dataPatient)
     }
   }
 }

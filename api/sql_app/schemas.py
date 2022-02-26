@@ -46,3 +46,11 @@ class Patient(BaseModel):
     reason: str = None
     background_disease: str = None
     img_name: str
+    point_1: int
+    point_2: int
+    point_3: int
+    point_4: int
+    point_5: int
+    point_6: int
+    point_7: int
+    point_8: int

@@ -90,9 +90,10 @@ const AddPatientDialog = {
         background_disease: this.data.backgroundDisease,
         img_name: nameImg.data.name
       }
-      await axios.post(`${this.baseUrl}/add_patient`, dataPatient)
-      this.url = `https://backendlinhmai.herokuapp.com/vector_image?name=${nameImg.data.name}`
-      this.$emit('set-img-name', nameImg.data)
+      // await axios.post(`${this.baseUrl}/add_patient`, dataPatient)
+      // this.url = `https://backendlinhmai.herokuapp.com/vector_image?name=${nameImg.data.name}`
+      // this.$emit('set-img-name', nameImg.data)
+      this.$emit('set-data-patient', dataPatient)
       this.close()
       // const url = await axios.get(`http://127.0.0.1:8000/vector_image?name=${nameImg.data.name}`)
     },
