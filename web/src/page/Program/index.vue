@@ -77,6 +77,7 @@
     result-dialog(
       :value="isOpenResultDialog"
       :img-name="imageName"
+      :patient-id="patientId"
       @on-close="isOpenResultDialog = false"
     )
     list-patient-dialog(
@@ -139,7 +140,8 @@ const Program = {
         reason: '',
         status: '',
         backgroundDisease: ''
-      }
+      },
+      patientId: 0
     }
   },
   watch: {
@@ -184,7 +186,7 @@ const Program = {
       this.dataPatient['point_7'] = this.point[6],
       this.dataPatient['point_8'] = this.point[7]
       console.log(this.dataPatient)
-      await axios.post(`${this.baseUrl}/add_patient`, this.dataPatient)
+      this.patientId = (await axios.post(`${this.baseUrl}/add_patient`, this.dataPatient)).data.id
     }
   }
 }

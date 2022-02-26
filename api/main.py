@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sql_app import models, schemas
 from sql_app.database import SessionLocal, engine
 from sql_app.schemas import Patient
+import sql_app.models as models
 
 api = FastAPI()
 models.Base.metadata.create_all(bind=engine)
@@ -65,6 +66,14 @@ def add_patient(patient: Patient, db: Session = Depends(get_db)):
 def get_patient(db: Session = Depends(get_db)):
     result = db.query(models.Patient).all()
     return result
+
+
+@api.delete('/delete_patient/{id}')
+def delete_patient(id: int, db: Session = Depends(get_db)):
+    data = db.query(models.Patient).get(id)
+    db.delete(data)
+    db.commit()
+    return {'msg': 'deleted'}
 
 
 @api.post("/users/", response_model=schemas.User)
