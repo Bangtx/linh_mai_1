@@ -29,6 +29,11 @@ def get_db():
         db.close()
 
 
+@api.get('/test')
+def test():
+    return {'msg': 'test'}
+
+
 @api.post('/image')
 async def create_upload_file(file: UploadFile = File(...)):
     # file_location = f"file/{file.filename}"
