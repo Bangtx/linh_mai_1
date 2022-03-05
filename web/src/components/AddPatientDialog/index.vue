@@ -55,7 +55,7 @@ const AddPatientDialog = {
   },
   data () {
     return  {
-      baseUrl: 'http://127.0.0.1:8000',
+      baseUrl: 'http://45.117.80.122:8000',
       chosenFile: null,
       show: true,
       file: '',
