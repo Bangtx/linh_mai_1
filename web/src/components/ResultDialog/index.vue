@@ -50,8 +50,8 @@
 
                       div.bg-result
                         h3.white--text Kết luận
-                        span.white--text(v-if="tab === 0  && imgName.yes") {{ result[index].result }}
-                        span.white--text(v-if="tab === 0 && !imgName.yes") 98% Không có khối u
+                        span.white--text(v-if="tab === 0  && yes") {{ result[index].result }}
+                        span.white--text(v-if="tab === 0 && !yes") 98% Không có khối u
                         v-text-field.whitetext(v-if="tab === 1" :value="checkbox ? resultAI : ''")
 
                       v-checkbox(v-model="checkbox" :label="'Tự đông lấy kêt quả AI'")
@@ -103,7 +103,8 @@ const ResultDialog = {
         { recommend: 'Lấy mẫu sinh thiết và phẫu thuật loại bỏ', result: '95% khả năng ung thư'},
         { recommend: 'Lấy mẫu sinh thiết và phẫu thuật loại bỏ', result: '96% khả năng ung thư'}
       ],
-      baseUrl: 'http://45.117.80.122:8000'
+      yes: false,
+      baseUrl: 'https://backendlinhmai.herokuapp.com'
       // baseUrl: 'https://backendlinhmai.herokuapp.com'
     }
   },
@@ -120,16 +121,22 @@ const ResultDialog = {
     },
     handleClick () {
       alert('Đã lưu')
+    },
+    async get_is_yes () {
+      const { data } = await axios.get(`${this.baseUrl}/yes?file=${this.imgName.name}`)
+      this.yes = data.yes
     }
   },
   watch: {
     value (val) {
       if (val) {
+        this.get_is_yes()
         this.url = `${this.baseUrl}/vector_image?name=${this.imgName.name}`
         this.urlSmall = this.url
         if (this.imgName.yes) {
           this.urlSmall = `${this.baseUrl}/vector?name=${this.imgName.name}`
         }
+        console.log(this.imgName)
       }
     }
   }

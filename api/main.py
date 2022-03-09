@@ -93,3 +93,9 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+@api.get('/yes')
+async def is_yes(file: str):
+    imgs = os.listdir('file/yes')
+    return {'yes': file in imgs}
