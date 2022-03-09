@@ -53,9 +53,9 @@ const LoginDialog = {
     },
     clickLogin () {
       if (this.userName === 'admin' && this.passWord === 'admin') {
-        this.$emit('on-close')
         this.$emit('update-is-login')
         this.$emit('login-ok')
+        this.$emit('on-close')
       }
     }
   },
