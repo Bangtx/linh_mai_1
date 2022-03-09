@@ -22,12 +22,12 @@
       )
       v-row
         v-col(cols="4")
-          button.btn-pro.mt-10(@click="openLoginDialog = true")
+          button.btn-pro.mt-10(@click="handleOpenLoginDialog()")
             h3 Testing tool
             span Chương Trình Chuẩn Đoán Ung Thư
 
         v-col(cols="4")
-          button.btn-tra.mt-10
+          button.btn-tra.mt-10(@click="handleOpenTraining()")
             h3 Training mode
             span Chương Trình Đào Tạo Và Huấn Luyện
 
@@ -39,22 +39,65 @@
     login-dialog(
       :value="openLoginDialog"
       @on-close="openLoginDialog = false"
+      @update-is-login="isLogin = true"
+      @login-ok="loginOK"
+    )
+
+    training-mode(
+      :value="openTradingMode"
+      @on-close="openTradingMode = false"
     )
 
 </template>
 
 <script>
 import LoginDialog from '@/components/LoginDialog/index.vue'
+import TrainingMode from '@/components/TrainingMode/index.vue'
 
 const Main = {
   components: {
-    LoginDialog
+    LoginDialog,
+    TrainingMode
   },
   data () {
     return {
-      openLoginDialog: false
+      openTradingMode: false,
+      openLoginDialog: false,
+      isTraining: false,
+      isLogin: this.$route.query.log ? this.$route.query.log : false
     }
   },
+  methods: {
+    handleOpenTraining () {
+      if (this.isLogin) this.openTradingMode = true
+      else {
+        this.openLoginDialog = true
+        this.isTraining = true
+      }
+      // else this.$router.push({ path: '/program' })
+    },
+    loginOK () {
+      this.$router.replace({
+        query: {
+          log: this.isLogin
+        }
+      }).catch(error => {
+        if (error.name != "NavigationDuplicated") {
+          throw error
+        }
+      })
+      if (this.isTraining) {
+        this.openLoginDialog = true
+      } else {
+        this.$router.push({ path: '/program' })
+      }
+    },
+    handleOpenLoginDialog () {
+      this.isTraining = false
+      if (!this.isLogin) this.openLoginDialog = true
+      else this.$router.push({ path: '/program' })
+    }
+  }
 }
 
 export default Main
