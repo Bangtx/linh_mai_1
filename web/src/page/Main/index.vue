@@ -32,7 +32,7 @@
             span Chương Trình Đào Tạo Và Huấn Luyện
 
         v-col(cols="4")
-          button.btn-men.mt-10
+          button.btn-men.mt-10(@click="handleOpenAbout()")
             h3 About us
             span Giới Thiệu Đội Ngữ Sáng Tạo
 
@@ -48,26 +48,37 @@
       @on-close="openTradingMode = false"
     )
 
+    about-us-dialog(
+      :value="openAboutDialog"
+      @on-close="openAboutDialog = false"
+    )
+
 </template>
 
 <script>
 import LoginDialog from '@/components/LoginDialog/index.vue'
 import TrainingMode from '@/components/TrainingMode/index.vue'
+import AboutUsDialog from '@/components/AboutUsDialog/index.vue'
 
 const Main = {
   components: {
     LoginDialog,
-    TrainingMode
+    TrainingMode,
+    AboutUsDialog
   },
   data () {
     return {
       openTradingMode: false,
       openLoginDialog: false,
+      openAboutDialog: false,
       isTraining: false,
       isLogin: this.$route.query.log ? this.$route.query.log : false
     }
   },
   methods: {
+    handleOpenAbout() {
+      this.openAboutDialog = true
+    },
     handleOpenTraining () {
       if (this.isLogin) this.openTradingMode = true
       else {
