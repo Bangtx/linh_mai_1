@@ -61,8 +61,8 @@ const LoginDialog = {
   },
   data() {
     return {
-      userName: 'admin',
-      passWord: 'admin'
+      userName: '',
+      passWord: ''
     }
   }
 }
