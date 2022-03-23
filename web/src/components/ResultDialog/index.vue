@@ -52,7 +52,10 @@
                         h3.white--text Kết luận
                         span.white--text(v-if="tab === 0  && yes") {{ result[index].result }}
                         span.white--text(v-if="tab === 0 && !yes") 98% Không có khối u
-                        v-text-field.whitetext(v-if="tab === 1" :value="checkbox ? resultAI : ''")
+                        v-text-field.whitetext(
+                          v-if="tab === 1"
+                          :value="checkbox ? resultAI : ''"
+                        )
 
                       div.bg-result(v-if="tab === 1")
                         h3.white--text Mô tả
@@ -130,6 +133,7 @@ const ResultDialog = {
     async get_is_yes () {
       const { data } = await axios.get(`${this.baseUrl}/yes?file=${this.imgName.name}`)
       this.yes = data.yes
+      this.resultAI = data.yes ? this.result[0].result : 'Không có khối u'
     }
   },
   watch: {
