@@ -40,7 +40,6 @@ async def create_upload_file(file: UploadFile = File(...)):
     # with open(file_location, "wb+") as file_object:
     #     file_object.write(file.file.read())
     imgs = os.listdir('file/yes')
-    print(imgs)
     return {"name": file.filename, 'yes': file.filename in imgs}
 
 
