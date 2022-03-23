@@ -54,6 +54,10 @@
                         span.white--text(v-if="tab === 0 && !yes") 98% Không có khối u
                         v-text-field.whitetext(v-if="tab === 1" :value="checkbox ? resultAI : ''")
 
+                      div.bg-result(v-if="tab === 1")
+                        h3.white--text Mô tả
+                        v-text-field.whitetext
+
                       v-checkbox(v-model="checkbox" :label="'Tự đông lấy kêt quả AI'")
                       v-row
                         v-col(cols="1")
@@ -163,7 +167,7 @@ export default ResultDialog
 .im
   margin-left: 10%
 .controls
-  height: 33vh
+  height: 43vh
   border-radius: 10px
 .whitetext input
   color: white !important
